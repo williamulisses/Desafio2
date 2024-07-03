@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Criptografia Simples</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+    label {
+        font-weight: bold;
+    }
+    input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+    button {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    .result {
+        margin-top: 20px;
+        font-size: 18px;
+    }
+</style>
+</head>
+<body>
+    <h2>Criptografia Simples</h2>
+    <label for="inputText">Texto:</label>
+    <input type="text" id="inputText" placeholder="Insira o texto aqui...">
+    <br>
+    <label for="mode">Modo:</label>
+    <select id="mode">
+        <option value="encrypt">Criptografar</option>
+        <option value="decrypt">Descriptografar</option>
+    </select>
+    <br>
+    <button onclick="process()">Processar</button>
+    <div class="result" id="result"></div>
+
+    <script>
+        // Função para criptografar um texto conforme as regras especificadas
+        function encryptText(text) {
+            const replacements = {
+                'e': 'enter',
+                'i': 'imes',
+                'a': 'ai',
+                'o': 'ober',
+                'u': 'ufat'
+            };
+
+            let encryptedText = '';
+            for (let char of text) {
+                if (char in replacements) {
+                    encryptedText += replacements[char];
+                } else {
+                    encryptedText += char;
+                }
+            }
+            return encryptedText;
+        }
+
+        // Função para descriptografar um texto criptografado
+        function decryptText(encryptedText) {
+            const replacements = {
+                'enter': 'e',
+                'imes': 'i',
+                'ai': 'a',
+                'ober': 'o',
+                'ufat': 'u'
+            };
+
+            let decryptedText = '';
+            let i = 0;
+            while (i < encryptedText.length) {
+                let found = false;
+                for (let key in replacements) {
+                    if (encryptedText.startsWith(key, i)) {
+                        decryptedText += replacements[key];
+                        i += key.length;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    decryptedText += encryptedText[i];
+                    i++;
+                }
+            }
+            return decryptedText;
+        }
+
+        // Função principal para processar entrada do usuário
+        function process() {
+            const inputText = document.getElementById('inputText').value.trim().toLowerCase();
+            const mode = document.getElementById('mode').value;
+
+            let result = '';
+            if (mode === 'encrypt') {
+                result = encryptText(inputText);
+            } else if (mode === 'decrypt') {
+                result = decryptText(inputText);
+            }
+
+            document.getElementById('result').textContent = result;
+        }
+    </script>
+</body>
+</html>
